@@ -1,95 +1,161 @@
-# Advanced_Construction_Data_Modeling
-This project uses Microsoft Power BI to analyse construction project, procurement and contract award information from the Zambia Electronic Projects Registry and Analytics (ZEPRA).
 # Building Advanced Data Models and DAX Calculations
 
-## Project Overview
+## Construction Project Analytics Using Microsoft Power BI
 
-This project uses Microsoft Power BI to analyse construction project, procurement and contract award information from the Zambia Electronic Projects Registry and Analytics (ZEPRA).
+### Project Overview
 
-The objective is to prepare multiple datasets, develop a relational data model, create DAX measures and present important results through an interactive dashboard.
+This project focuses on developing a structured data model and creating DAX calculations using Microsoft Power BI Desktop. It uses publicly available construction-related data from the **Zambia Electronic Projects Registry and Analytics (ZEPRA)** platform.
 
-## Objectives
+The purpose is to connect project, procurement and contract award information, calculate useful performance indicators and present the results through a Power BI dashboard.
 
-- Import and transform construction-related datasets.
-- Inspect data quality and handle missing values.
-- Develop a relational data model.
-- Create DAX measures for important KPIs.
-- Build a Power BI dashboard for project analysis.
-- Identify data limitations and possible improvements.
+### Objectives
 
-## Datasets
+- Import and prepare construction-related datasets using Power Query.
+- Examine data quality, missing values and column data types.
+- Identify primary keys and relationship fields.
+- Build a structured relational data model.
+- Develop DAX measures for construction and procurement analysis.
+- Design a dashboard to present key indicators and project distributions.
+- Identify data limitations that may affect analytical results.
 
-Three public CSV datasets were used:
+### Data Sources
 
-1. Project Register
-2. Procurement Register
-3. Contract Awards
+Three publicly available CSV datasets were used:
 
-**Data source:** [ZEPRA Official Website](https://zepra.co.zm/)
+| Dataset | Description |
+|---|---|
+| Project Register | Project details, locations, budgets, status and physical completion information |
+| Procurement Register | Procurement references, methods, estimated values and bid information |
+| Contract Awards | Award identifiers, suppliers, contract values and award dates |
 
-## Tools and Technologies
+**Source:** [ZEPRA Official Website](https://zepra.co.zm/)
+
+**Dataset download links:**
+
+- [Project Register CSV](https://zepra.co.zm/open-data/download/projects?format=csv)
+- [Procurement Register CSV](https://zepra.co.zm/open-data/download/procurement?format=csv)
+- [Contract Awards CSV](https://zepra.co.zm/open-data/download/awards?format=csv)
+
+### Tools and Technologies
 
 - Microsoft Power BI Desktop
 - Power Query Editor
-- DAX (Data Analysis Expressions)
-- CSV datasets
+- Data Analysis Expressions (DAX)
+- CSV (Comma-Separated Values)
 - Microsoft Word
 
-## Data Model
+### Data Model Design
 
-The final model contains four tables:
+The final Power BI model contains four tables:
 
-- `project_register`
-- `procurement_register`
-- `contract_awards`
-- `DimOCID`
+1. `project_register`
+2. `procurement_register`
+3. `contract_awards`
+4. `DimOCID`
 
-Three active one-to-many relationships were created using project identifiers and OCID values.
+The `DimOCID` lookup table was created using unique, non-blank OCID values from the Procurement Register.
 
-## Key Performance Indicators
+Three active one-to-many relationships were established:
 
-The dashboard includes:
+| One-side table | Many-side table | Relationship key |
+|---|---|---|
+| Project Register | Procurement Register | `zepra_id` → `linked_project_id` |
+| DimOCID | Procurement Register | `ocid` → `ocid` |
+| DimOCID | Contract Awards | `ocid` → `ocid` |
 
+All three relationships use single-direction filtering.
+
+### DAX Calculations
+
+The project includes measures for:
+
+- Total Award Amount
+- Total Number of Awards
+- Average Award Amount
+- Average Physical Completion
+- Average Bids Received
+- Total Projects
+- Average Schedule Delay (tested but not included in the dashboard because suitable date information was unavailable)
+
+Four additional measures were developed to examine data completeness:
+
+- Projects With Physical Progress
+- Projects With Physical Progress %
+- Awards With Recorded Amount
+- Award Amount Data Coverage %
+
+### Dashboard Overview
+
+The Power BI dashboard contains six KPI cards and two charts.
+
+**KPI indicators:**
 - Total Projects: 930
 - Total Award Amount: Approximately ZMW 93.66 billion
-- Total Number of Awards: Approximately 30 thousand
+- Total Number of Awards: Approximately 30,000
 - Average Award Amount: Approximately ZMW 3.12 million
 - Average Physical Completion: 27.67%
 - Average Bids Received: 1.61
 
-## Dashboard Visualisations
-
+**Charts:**
 - Projects by Status
 - Projects by Province
-- KPI cards for project, award and procurement indicators
 
-## Project Structure
+A separate DAX Validation page was also created to display the results of the four additional measures.
+
+### Key Data Limitations
+
+The analysis identified several limitations in the source datasets:
+
+- Missing project budget information.
+- Incomplete linked project identifiers.
+- Limited physical completion information.
+- Missing planned and actual completion dates for schedule delay analysis.
+- No recorded values in the `amount_paid` field.
+
+Missing values were retained where appropriate rather than automatically replaced with zero. These limitations were considered when interpreting the results.
+
+### Project Deliverables
+
+The project documentation and supporting files include:
+
+- Power BI report (`.pbix`)
+- Internship project report (`.docx`)
+- Dashboard screenshot
+- Data model relationship screenshot
+- DAX validation screenshot
+
+### Repository Structure
+
+The repository is organised into the following folders:
 
 ```text
-Advanced_Construction_Data_Modeling/
+Building_Advanced_Data_Models_and_DAX/
 │
-├── data/
-│   ├── project_register.csv
-│   ├── procurement_register.csv
-│   └── contract_awards.csv
-│
-├── screenshots/
-│   ├── dashboard_overview.png
-│   └── data_model_relationships.png
-│
+├── README.md
 ├── report/
 │   └── Building_Advanced_Data_Models_and_DAX_Calculations_Report.docx
 │
-├── README.md
-└── .gitignore
+├── powerbi/
+│   └── Construction_Project_Analytics.pbix
+│
+├── screenshots/
+│   ├── dashboard_overview.png
+│   ├── data_model_relationships.png
+│   └── dax_validation.png
+│
+└── data/
+    └── README.md
 ```
 
-## Limitations
+*The file and folder names above are suggested names; use the actual names in your repository.*
 
-Some source fields contain missing information, including budget values, linked project identifiers and completion dates. Therefore, certain financial and schedule calculations could not be completed reliably.
+### Conclusion
 
-The dashboard presents results based on the available records and should be interpreted with these limitations in mind.
+This project demonstrates how Microsoft Power BI can be used to prepare data, build relational models, develop DAX calculations and create visual reports for construction project analytics. It also highlights the importance of data quality, accurate relationships and careful interpretation when working with real-world public datasets.
 
-## Author
+### References
 
-Student Project — Power BI Data Analytics Internship
+- [ZEPRA Official Website](https://zepra.co.zm/)
+- [Microsoft Power BI Documentation](https://learn.microsoft.com/en-us/power-bi/)
+- [Microsoft DAX Reference](https://learn.microsoft.com/en-us/dax/)
+- [Microsoft Power Query Documentation](https://learn.microsoft.com/en-us/power-query/)
